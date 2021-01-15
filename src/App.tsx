@@ -3,13 +3,12 @@ import './App.css'
 import BezierEditor from 'bezier-easing-editor'
 import React, { useState } from 'react'
 
-// type CubicBezier = {
-//   x1: number
-//   x2: num
-// }
-
 function App() {
-  const [value, setValue] = useState<number[]>([0, 0, 1, 1])
+  const [value, _setValue] = useState<number[]>([0, 0, 1, 1])
+  const setValue = (val: number[]) => {
+    val = val.map((v) => Math.round(v * 1000) / 1000)
+    _setValue(val)
+  }
 
   return (
     <div className="App">

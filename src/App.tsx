@@ -1,5 +1,3 @@
-import './App.css'
-
 import BezierEditor from 'bezier-easing-editor'
 import React, { useState } from 'react'
 

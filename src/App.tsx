@@ -3,6 +3,8 @@ import './App.css'
 import BezierEditor from 'bezier-easing-editor'
 import React, { useState } from 'react'
 
+import { cubicBezierFormat } from './utils'
+
 function App() {
   const [value, _setValue] = useState<number[]>([0, 0, 1, 1])
   const setValue = (val: number[]) => {
@@ -25,7 +27,7 @@ function App() {
           Controlled Bezier Editor
         </text>
       </BezierEditor>
-      <p>{value.join(' ')}</p>
+      <p>{cubicBezierFormat(value)}</p>
     </div>
   )
 }

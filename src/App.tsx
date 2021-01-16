@@ -2,9 +2,8 @@ import BezierEditor from 'bezier-easing-editor'
 import React, { useState } from 'react'
 
 import { AnimationApplyButton } from './components/atoms/AnimationApplyButton'
+import { MoveBallArea } from './components/molecules/MoveBallArea'
 import { cubicBezierFormat } from './utils'
-
-type CubicBezier = [number, number, number, number]
 
 const animationTemplates: {
   [key: string]: CubicBezier
@@ -38,6 +37,7 @@ function App() {
   return (
     <div className="App">
       <h1>Bezier</h1>
+      <MoveBallArea value={value} />
       {renderButtons()}
       <BezierEditor
         className="bezier"

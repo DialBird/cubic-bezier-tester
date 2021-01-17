@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 
+import { dist } from '../../utils'
 import Curve from '../atoms/Curve'
 import Handle from '../atoms/Handle'
 
@@ -43,6 +44,18 @@ export const BezierEditor = ({
     }
   }
 
+  const onDownHandle0 = (e: any) => {
+    const [x, y] = positionForEvent(e)
+    if (dist(value[0], value[1], x, y) <= dist(value[2], value[3], x, y)) {
+      value[0] = x
+      value[1] = y
+    } else {
+      value[2] = x
+      value[3] = y
+    }
+    onChange(value)
+  }
+
   const onDownHandle1 = onDownHandle(1)
   const onDownHandle2 = onDownHandle(2)
   const onEnterHandle1 = onEnterHandle(1)
@@ -59,7 +72,10 @@ export const BezierEditor = ({
 
   const positionForEvent = (e: any) => {
     const rect = aRef.current.getBoundingClientRect()
-    return [e.clientX - rect.left, e.clientY - rect.top]
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+
+    return [inversex(x), inversey(y)]
   }
 
   const x = (value: any) => {
@@ -72,6 +88,11 @@ export const BezierEditor = ({
     return Math.round(padding[0] + (1 - value) * h)
   }
 
+  const inversex = (x: number) => {
+    const w = width - padding[1] - padding[3]
+    return Math.max(0, Math.min((x - padding[3]) / w, 1))
+  }
+
   const inversey = (y: any) => {
     const clampMargin = 2 * handleRadius
     const h = height - padding[0] - padding[2]
@@ -79,18 +100,13 @@ export const BezierEditor = ({
     return 1 - (y - padding[0]) / h
   }
 
-  const inversex = (x: number) => {
-    const w = width - padding[1] - padding[3]
-    return Math.max(0, Math.min((x - padding[3]) / w, 1))
-  }
-
   const onDownMove = (e: any) => {
     if (down) {
       e.preventDefault()
       const i = 2 * (down - 1)
       const [x, y] = positionForEvent(e)
-      value[i] = inversex(x)
-      value[i + 1] = inversey(y)
+      value[i] = x
+      value[i + 1] = y
       onChange(value)
     }
   }
@@ -107,7 +123,9 @@ export const BezierEditor = ({
   }
 
   const containerEvents = !down
-    ? {}
+    ? {
+        onMouseDown: onDownHandle0,
+      }
     : {
         onMouseMove: onDownMove,
         onMouseUp: onDownUp,

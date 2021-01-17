@@ -21,7 +21,7 @@ export const AnimationBallArea = ({ value }: AnimationBallAreaProps) => {
     setBalls([])
     anime({
       targets: animationState,
-      position: 300,
+      position: 400,
       duration: 1000,
       value: [0, 100],
       easing: `cubicBezier(${value.join(',')})`,
@@ -45,11 +45,7 @@ export const AnimationBallArea = ({ value }: AnimationBallAreaProps) => {
   })
 
   return (
-    <div
-      className="relative h-20"
-      onClick={startAnimation}
-      style={{ width: '300px' }}
-    >
+    <div className="relative h-16 w-full" onClick={startAnimation}>
       <div className="absolute top-0 left-0">{balls}</div>
       <div className="absolute top-0 left-0">
         <MoveBall position={position} />

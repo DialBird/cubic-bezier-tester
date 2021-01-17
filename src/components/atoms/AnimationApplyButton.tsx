@@ -11,7 +11,7 @@ export const AnimationApplyButton = ({
 }: AnimationApplyButtonProps) => {
   return (
     <button
-      className="w-16 h-16 border overflow-hidden"
+      className="w-16 h-16 border rounded overflow-hidden"
       onClick={onClick}
       type="button"
     >

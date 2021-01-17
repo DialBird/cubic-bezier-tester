@@ -1,8 +1,9 @@
 import BezierEditor from 'bezier-easing-editor'
-import React, { useState } from 'react'
+import React from 'react'
 
 import { AnimationApplyButton } from './components/atoms/AnimationApplyButton'
 import { AnimationBallArea } from './components/molecules/AnimationBallArea'
+import { useCubicBezier } from './hooks/useCubicBezier'
 import { cubicBezierFormat } from './utils'
 
 const animationTemplates: {
@@ -15,11 +16,7 @@ const animationTemplates: {
 }
 
 function App() {
-  const [value, _setValue] = useState<CubicBezier>([0.0, 0.0, 1.0, 1.0])
-  const setValue = (val: CubicBezier) => {
-    val = val.map((v) => Math.round(v * 1000) / 1000) as CubicBezier
-    _setValue(val)
-  }
+  const [value, setValue] = useCubicBezier()
 
   const renderButtons = () => {
     const lst = []

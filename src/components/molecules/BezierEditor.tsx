@@ -25,7 +25,22 @@ export const BezierEditor = ({
   const width = 300
   const height = 300
   const padding = [10, 10, 10, 10]
-  const aRef = useRef<SVGSVGElement>(null!)
+  const rootRef = useRef<SVGSVGElement>(null!)
+
+  const onDownHandle0 = (e: any) => {
+    const [x, y] = positionForEvent(e)
+    if (dist(value[0], value[1], x, y) <= dist(value[2], value[3], x, y)) {
+      value[0] = x
+      value[1] = y
+      setDown(1)
+    } else {
+      value[2] = x
+      value[3] = y
+      setDown(2)
+    }
+    setHover(null)
+    onChange(value)
+  }
 
   const onDownHandle = (h: number) => () => {
     setHover(null)
@@ -44,25 +59,6 @@ export const BezierEditor = ({
     }
   }
 
-  const onDownHandle0 = (e: any) => {
-    const [x, y] = positionForEvent(e)
-    if (dist(value[0], value[1], x, y) <= dist(value[2], value[3], x, y)) {
-      value[0] = x
-      value[1] = y
-    } else {
-      value[2] = x
-      value[3] = y
-    }
-    onChange(value)
-  }
-
-  const onDownHandle1 = onDownHandle(1)
-  const onDownHandle2 = onDownHandle(2)
-  const onEnterHandle1 = onEnterHandle(1)
-  const onEnterHandle2 = onEnterHandle(2)
-  const onLeaveHandle1 = onLeaveHandle()
-  const onLeaveHandle2 = onLeaveHandle()
-
   const onDownLeave = (e: any) => {
     if (down) {
       onDownMove(e)
@@ -71,7 +67,7 @@ export const BezierEditor = ({
   }
 
   const positionForEvent = (e: any) => {
-    const rect = aRef.current.getBoundingClientRect()
+    const rect = rootRef.current.getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
 
@@ -134,20 +130,20 @@ export const BezierEditor = ({
   const handle1Events = down
     ? {}
     : {
-        onMouseDown: onDownHandle1,
-        onMouseEnter: onEnterHandle1,
-        onMouseLeave: onLeaveHandle1,
+        onMouseDown: onDownHandle(1),
+        onMouseEnter: onEnterHandle(1),
+        onMouseLeave: onLeaveHandle,
       }
   const handle2Events = down
     ? {}
     : {
-        onMouseDown: onDownHandle2,
-        onMouseEnter: onEnterHandle2,
-        onMouseLeave: onLeaveHandle2,
+        onMouseDown: onDownHandle(2),
+        onMouseEnter: onEnterHandle(2),
+        onMouseLeave: onLeaveHandle,
       }
 
   return (
-    <svg ref={aRef} width={300} height={300} {...containerEvents}>
+    <svg ref={rootRef} width={300} height={300} {...containerEvents}>
       <Curve {...sharedProps} value={value} curveWidth={curveWidth} />
       <g>
         <Handle

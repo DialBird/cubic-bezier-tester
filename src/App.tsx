@@ -1,8 +1,8 @@
-import BezierEditor from 'bezier-easing-editor'
 import React from 'react'
 
 import { AnimationApplyButton } from './components/atoms/AnimationApplyButton'
 import { AnimationBallArea } from './components/molecules/AnimationBallArea'
+import { BezierEditor } from './components/molecules/BezierEditor'
 import { useCubicBezier } from './hooks/useCubicBezier'
 import { cubicBezierFormat } from './utils'
 
@@ -45,19 +45,14 @@ function App() {
         <div className="flex flex-col justify-between items-center gap-y-4">
           {renderButtons()}
         </div>
-        <div>
+        <div className="border flex justify-center items-center p-2">
           <BezierEditor
-            className="bezier ml-auto"
-            value={value}
-            onChange={setValue}
-            handleStroke={3}
-            handleRadius={6}
             curveWidth={3}
-          >
-            <text x={0} y={16} fill="#f00">
-              Controlled Bezier Editor
-            </text>
-          </BezierEditor>
+            handleRadius={6}
+            handleStroke={3}
+            onChange={setValue}
+            value={value}
+          />
         </div>
       </div>
       <p className="text-2xl text-center">{cubicBezierFormat(value)}</p>

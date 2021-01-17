@@ -144,6 +144,14 @@ export const BezierEditor = ({
 
   return (
     <svg ref={rootRef} width={300} height={300} {...containerEvents}>
+      <line
+        x1="10"
+        y1="290"
+        x2="290"
+        y2="10"
+        stroke="#eee"
+        strokeWidth={curveWidth}
+      />
       <Curve {...sharedProps} value={value} curveWidth={curveWidth} />
       <g>
         <Handle
